@@ -1,5 +1,6 @@
+import { IUserFilters } from "../model/user/filter-user.dto";
 import User from "../model/user/user.entity";
-import { Query, Resolver } from "type-graphql";
+import { Arg, Args, ArgsType, Query, Resolver } from "type-graphql";
 
 
 interface IProvider {
@@ -24,16 +25,21 @@ export class UserResolver {
 		]
 	};
 
-	@Query(() => [User])
+	@Query(returns => [User])
 	public async users(): Promise<User[]> {
 
 		return await this.fakeDb.users;
 	}
 
-	@Query(() => [User])
-	public async usersWithFilter(email: User['email']): Promise<User[]> {
+	@Query(returns => [User])
+	public usersWithFilter(
+		// @Arg("filters", { nullable: true }) filters?: IUserFilters
+		@Args() { id, name, email }: IUserFilters
+	): User[] {
 
-		return await this.fakeDb.users;
+		console.debug(id, name, email);
+
+		return this.fakeDb.users;
 	}
 
 }

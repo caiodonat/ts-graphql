@@ -7,8 +7,11 @@ import { createHandler } from "graphql-http/lib/use/express";
 import { UserResolver } from "./domain/resolver/user.resolver"
 
 async function main() {
+	console.time('Restart')
+
 	const schema = await buildSchema({
 		resolvers: [UserResolver],
+		validate: false,
 		emitSchemaFile: true,
 	})
 
@@ -17,13 +20,14 @@ async function main() {
 	app.use(
 		"/graphql",
 		createHandler({
-			schema: schema
+			schema: schema,
 		})
 	)
 
-	app.listen(8000)
-
-	console.log("Running a GraphQL API server at http://localhost:8000/graphql")
+	app.listen(8000, () => {
+		console.clear();
+		console.timeEnd('Restart')
+	});
 }
 
 main()

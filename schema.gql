@@ -5,7 +5,7 @@
 
 type Query {
   users: [User!]!
-  usersWithFilter: [User!]!
+  usersWithFilter(email: String, id: Int, name: String): [User!]!
 }
 
 type User {
