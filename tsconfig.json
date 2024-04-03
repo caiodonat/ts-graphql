@@ -5,9 +5,8 @@
     "target": "es2016", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     /* Modules */
     "module": "commonjs", /* Specify what module code is generated. */
-    /* JavaScript Support */
-    /* Emit */
-    /* Interop Constraints */
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
     "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
     /* Type Checking */
@@ -16,6 +15,18 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
-  }
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "@model/*": [
+        "./src/domain/model/*"
+      ],
+      "@resolver/*": [
+        "./src/domain/resolver/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
 }
