@@ -1,45 +1,59 @@
-import { IUserFilters } from "../model/user/filter-user.dto";
+import { UserInput } from "../model/user/create-user.dto";
+import UserRepository from "../../infrastructure/repository/user.repository";
+import { IUserFilters, IUserDbWhere } from "../model/user/filter-user.dto";
 import User from "../model/user/user.entity";
-import { Arg, Args, ArgsType, Query, Resolver } from "type-graphql";
+import { Arg, Args, ArgsType, Mutation, Query, Resolver } from "type-graphql";
 
-
-interface IProvider {
-	users: User[]
-}
 
 @Resolver(() => User)
 export class UserResolver {
 
-	private fakeDb: IProvider = {
-		users: [
-			{
-				id: 1,
-				name: "Caio Donat",
-				email: "cdonat@findes.org.br"
-			},
-			{
-				id: 2,
-				name: "Leonardo Sarmento",
-				email: "lsarmento@findes.org.br"
-			}
-		]
-	};
+	private readonly _repository: UserRepository;
 
-	@Query(returns => [User])
-	public async users(): Promise<User[]> {
+	constructor() {
+		this._repository = new UserRepository();
 
-		return await this.fakeDb.users;
 	}
 
 	@Query(returns => [User])
-	public usersWithFilter(
-		// @Arg("filters", { nullable: true }) filters?: IUserFilters
-		@Args() { id, name, email }: IUserFilters
-	): User[] {
+	public async users(
+		@Args() filters: IUserFilters
+	): Promise<User[]> {
 
-		console.debug(id, name, email);
-
-		return this.fakeDb.users;
+		return await this._repository.selectManyUsers(filters);
 	}
+
+	@Mutation(returns => User)
+	async createUser(
+		@Arg("input") input: UserInput
+	): Promise<User> {
+		const user = {
+			id: this.users.length + 1,
+			...input,
+		}
+
+		return await this._repository.insertUsers(input);
+	}
+
+	// @Mutation(returns => User)
+	// async updateUser(
+	// 	@Arg("id") id: User['id'],
+	// 	@Arg("input") input: UserInput
+	// ): Promise<User> {
+	// 	const user = await this._repository.selectUser(id);
+
+	// 	if (!user) {
+	// 		throw new Error("User not found")
+	// 	}
+
+	// 	const updatedUser = {
+	// 		...user,
+	// 		...input,
+	// 	}
+
+	// 	this.users = this.users.map(u => (u.id === id ? updatedUser : u))
+
+	// 	return updatedUser
+	// }
 
 }

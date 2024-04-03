@@ -17,14 +17,14 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": "./",
-    "paths": {
-      "@model/*": [
-        "./src/domain/model/*"
-      ],
-      "@resolver/*": [
-        "./src/domain/resolver/*"
-      ]
-    }
+    // "paths": {
+    //   "@model/*": [
+    //     "./src/domain/model/*"
+    //   ],
+    //   "@resolver/*": [
+    //     "./src/domain/resolver/*"
+    //   ]
+    // }
   },
   "include": [
     "src/**/*.ts"

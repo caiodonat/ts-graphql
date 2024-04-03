@@ -1,0 +1,29 @@
+/// @version v3.9.1
+/// @implements ERD v1.1.0 // ???
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "../prisma/generated/type-graphql"
+}
+
+generator client {
+   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../dev.db"
+}
+
+
+// Layer 1
+// Mains Entities
+
+model User {
+   id String @id @default(uuid())
+
+   name  String
+   email String @unique
+
+   @@map("users")
+}
